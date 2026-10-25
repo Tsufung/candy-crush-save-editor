@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candy Crush Saga - Save Game Hack & Booster Editor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #201736 0%, #0d0f17 55%, #07080c 100%);
+      --card-bg: rgba(23, 27, 43, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(33, 40, 65, 0.85);
+      --candy-pink: #FF2A85;
+      --candy-orange: #FF7600;
+      --candy-yellow: #FFD200;
+      --candy-blue: #00D2FC;
+      --candy-purple: #9D4EDD;
+      --candy-green: #00F090;
+      --text-main: #FFFFFF;
+      --text-muted: #8E9BAE;
+      --font-main: 'Outfit', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 42, 133, 0.15);
+      border: 1px solid rgba(255, 42, 133, 0.3);
+      color: #FF70A6;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      box-shadow: 0 0 20px rgba(255, 42, 133, 0.2);
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #FFF 20%, #FFB6D5 60%, #FF2A85 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(255, 42, 133, 0.25);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* DROPZONE CARD */
+    .drop-zone {
+      background: var(--card-bg);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--candy-pink);
+      background: rgba(255, 42, 133, 0.05);
+      box-shadow: 0 0 35px rgba(255, 42, 133, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .drop-icon {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .drop-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .drop-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-main);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF2A85, #FF5E36);
+      color: #FFF;
+      box-shadow: 0 4px 20px rgba(255, 42, 133, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 26px rgba(255, 42, 133, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.06);
+      color: #FFF;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .file-status-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding: 12px 18px;
+      background: rgba(0, 240, 144, 0.08);
+      border: 1px solid rgba(0, 240, 144, 0.3);
+      border-radius: 12px;
+      color: var(--candy-green);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    /* PRESETS TOOLBAR */
+    .toolbar-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .toolbar-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .presets-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-preset {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-preset:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-preset.highlight {
+      background: linear-gradient(135deg, #FF2A85, #9D4EDD);
+      border: none;
+      color: #FFF;
+      box-shadow: 0 2px 14px rgba(255, 42, 133, 0.4);
+    }
+
+    /* GRID CÁC LOẠI BÙA */
+    .boosters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .booster-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .booster-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--card-hover);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .booster-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex-shrink: 0;
+    }
+
+    .booster-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .booster-name-vi {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #FFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .booster-name-en {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .booster-offset {
+      display: inline-block;
+      margin-top: 4px;
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0, 210, 252, 0.1);
+      color: var(--candy-blue);
+      border: 1px solid rgba(0, 210, 252, 0.2);
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-val {
+      flex: 1;
+      background: rgba(10, 13, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFD200;
+      font-family: var(--font-code);
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 10px;
+      text-align: center;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-val:focus {
+      border-color: var(--candy-pink);
+      box-shadow: 0 0 14px rgba(255, 42, 133, 0.35);
+      background: rgba(15, 20, 32, 0.95);
+    }
+
+    .quick-btn {
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .quick-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .quick-btn.max-btn {
+      background: rgba(255, 42, 133, 0.2);
+      color: #FF70A6;
+      border: 1px solid rgba(255, 42, 133, 0.3);
+    }
+
+    .quick-btn.max-btn:hover {
+      background: var(--candy-pink);
+      color: #FFF;
+    }
+
+    /* BOTTOM SAVE BAR */
+    .save-bar {
+      position: sticky;
+      bottom: 16px;
+      background: rgba(18, 22, 36, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(16px);
+      border-radius: 18px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      z-index: 99;
+    }
+
+    .save-status {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .save-status-main {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .save-status-sub {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .save-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #00D26A, #00B894);
+      color: #000;
+      font-size: 1.05rem;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 210, 106, 0.35);
+    }
+
+    .btn-save:hover {
+      box-shadow: 0 6px 28px rgba(0, 210, 106, 0.55);
+      transform: translateY(-2px);
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: rgba(15, 20, 32, 0.95);
+      border: 1px solid rgba(0, 240, 144, 0.4);
+      border-left: 5px solid var(--candy-green);
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: #FFF;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      z-index: 9999;
+      transform: translateX(120%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    /* FOOTER INFO */
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 40px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8rem; }
+      .boosters-grid { grid-template-columns: 1fr; }
+      .save-bar { position: relative; bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="badge-pill">✨ Ultimate Save Game Hex Editor</div>
+      <h1>Candy Crush Saga Booster Editor</h1>
+      <p class="subtitle">Chỉnh sửa file <code style="color:#FF70A6">save_*.dat</code> chỉ bằng 1 cú click! Mở khóa 65,535 mạng sống vô hạn và toàn bộ bùa hỗ trợ.</p>
+    </header>
+
+    <!-- NOTICE BANNER -->
+    <div style="background: rgba(255, 170, 0, 0.08); border: 1px solid rgba(255, 170, 0, 0.35); border-radius: 16px; padding: 14px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+      <span style="font-size: 1.8rem; flex-shrink: 0;">⚠️</span>
+      <div style="font-size: 0.92rem; line-height: 1.5; color: #FFF;">
+        <strong style="color: #FFB830; text-transform: uppercase; letter-spacing: 0.5px;">Lưu ý bắt buộc:</strong> Công cụ này <strong>CHỈ HACK VẬT PHẨM (BOOSTERS) VÀ MẠNG SỐNG (LIVES)</strong>.<br>
+        <span style="color: #FF8585;">❌ KHÔNG HACK VÀNG (Gold bars)</span> và <span style="color: #FF8585;">KHÔNG HACK NƯỚC ĐI (Moves)</span> vì các chỉ số này được đồng bộ và kiểm soát 100% trên máy chủ King (Server-side).
+      </div>
+    </div>
+
+    <!-- DROPZONE -->
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-icon">🍬</div>
+      <div class="drop-title">Kéo & Thả file save_*.dat vào đây</div>
+      <div class="drop-desc">Hoặc chọn file từ máy tính của bạn (Windows, Android hoặc iOS)</div>
+      
+      <div class="file-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+          📁 Chọn File Save (.dat)
+        </button>
+        <button class="btn btn-outline" onclick="createSampleSaveFile()">
+          ✨ Tạo File Mẫu Test (Sample)
+        </button>
+        <input type="file" id="fileInput" accept=".dat" style="display:none" onchange="handleFileSelect(event)">
+      </div>
+
+      <div class="file-status-bar" id="fileStatusBar">
+        <span id="fileStatusText">✅ Đã tải: save_12345.dat (1,024 bytes)</span>
+        <span style="font-size:0.8rem; opacity:0.8">Sẵn sàng chỉnh sửa!</span>
+      </div>
+    </div>
+
+    <!-- PRESET TOOLBAR -->
+    <div class="toolbar-card">
+      <div class="toolbar-title">⚡ Cấu hình nhanh:</div>
+      <div class="presets-group">
+        <button class="btn-preset highlight" onclick="setAllValues(65535)">⚡ MAX TẤT CẢ (65,535)</button>
+        <button class="btn-preset" onclick="setAllValues(9999)">💎 Siêu Khủng (9,999)</button>
+        <button class="btn-preset" onclick="setAllValues(500)">🎯 Chuẩn Đẹp (500)</button>
+        <button class="btn-preset" onclick="setMaxLivesOnly()">💖 Chỉ Max Mạng</button>
+        <button class="btn-preset" onclick="resetToOriginal()">🔄 Đặt Lại Gốc</button>
+      </div>
+    </div>
+
+    <!-- 12 BOOSTER CARDS GRID -->
+    <div class="boosters-grid" id="boostersGrid">
+      <!-- Sẽ được JavaScript render tự động -->
+    </div>
+
+    <!-- STICKY BOTTOM SAVE BAR -->
+    <div class="save-bar">
+      <div class="save-status">
+        <div class="save-status-main" id="saveBarTitle">Sẵn Sàng Lưu File</div>
+        <div class="save-status-sub" id="saveBarSub">Hỗ trợ tự động tạo bản sao lưu .bak bảo vệ an toàn</div>
+      </div>
+      <div class="save-actions">
+        <button class="btn btn-outline" onclick="downloadBackup()">
+          🛡️ Tải Bản Gốc (.bak)
+        </button>
+        <button class="btn btn-save" onclick="saveAndDownload()">
+          💾 TẢI FILE SAVE ĐÃ HACK (.DAT)
+        </button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Candy Crush Saga Save Editor • Kiến trúc phân tích Hex Offset 16-bit Little-Endian chuẩn King Entertainment</p>
+      <p>Chỉ can thiệp kho vật phẩm & mạng sống offline • Không can thiệp vàng/moves máy chủ</p>
+      <p>Tương thích hoàn hảo với phiên bản PC Windows Store, Android và iPhone/iPad (iOS) • <a href="https://github.com/Tsufung/candy-crush-save-editor" target="_blank" style="color: var(--candy-pink); text-decoration: none; font-weight: 600;">Xem mã nguồn trên GitHub ⭐</a></p>
+    </footer>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span style="font-size:1.3rem">🎉</span>
+    <span id="toastMsg">Thao tác thành công!</span>
+  </div>
+
+  <script>
+    // Bảng định nghĩa 12 loại bùa và offset chuẩn
+    const BOOSTERS = [
+      { id: "lives", nameVi: "Mạng Sống (Lives)", nameEn: "Lives", icon: "❤️", offset: 656, hex: "0x0290", def: 65535 },
+      { id: "color_bomb", nameVi: "Kẹo Bom Màu", nameEn: "Color Bomb", icon: "💣", offset: 80, hex: "0x0050", def: 65535 },
+      { id: "jelly_fish", nameVi: "Cá Thạch", nameEn: "Jelly Fish", icon: "🐟", offset: 92, hex: "0x005C", def: 65535 },
+      { id: "coconut_wheel", nameVi: "Bánh Xe Dừa", nameEn: "Coconut Wheel", icon: "🥥", offset: 104, hex: "0x0068", def: 65535 },
+      { id: "lollipop_hammer", nameVi: "Búa Kẹo Mút", nameEn: "Lollipop Hammer", icon: "🍭", offset: 116, hex: "0x0074", def: 65535 },
+      { id: "freeze_time", nameVi: "Đóng Băng / Thêm Lượt Đi", nameEn: "Extra Moves", icon: "⏳", offset: 128, hex: "0x0080", def: 65535 },
+      { id: "lucky_candy", nameVi: "Kẹo May Mắn", nameEn: "Lucky Candy", icon: "🍬", offset: 152, hex: "0x0098", def: 65535 },
+      { id: "wrapped_striped", nameVi: "Kẹo Gói & Kẹo Sọc", nameEn: "Wrapped & Striped", icon: "🎁", offset: 164, hex: "0x00A4", def: 65535 },
+      { id: "hand_swaps", nameVi: "Bàn Tay Đổi Kẹo", nameEn: "Free Switch", icon: "🖐️", offset: 176, hex: "0x00B0", def: 65535 },
+      { id: "moonstruck", nameVi: "Bùa Mặt Trăng", nameEn: "Moonstruck", icon: "🌙", offset: 188, hex: "0x00BC", def: 65535 },
+      { id: "ufo_drops", nameVi: "Đĩa Bay UFO", nameEn: "UFO Drops", icon: "🛸", offset: 212, hex: "0x00D4", def: 65535 },
+      { id: "paint_brush", nameVi: "Cọ Sơn Kẹo / Sweet Teeth", nameEn: "Paint Brush", icon: "🎨", offset: 224, hex: "0x00E0", def: 65535 }
+    ];
+
+    let currentFileName = "save_sample.dat";
+    let originalBuffer = null;
+    let fileBuffer = null;
+    let audioCtx = null;
+
+    // Âm thanh kẹo nổ vui tai (Web Audio API)
+    function playCandyChime() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    // Khởi tạo thẻ Booster
+    function renderCards() {
+      const grid = document.getElementById("boostersGrid");
+      grid.innerHTML = "";
+
+      BOOSTERS.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "booster-card";
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="booster-icon-wrap">${item.icon}</div>
+            <div class="booster-meta">
+              <div class="booster-name-vi">${item.nameVi}</div>
+              <div class="booster-name-en">${item.nameEn}</div>
+              <span class="booster-offset">Offset: ${item.hex} (${item.offset})</span>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <input type="number" id="input_${item.id}" class="input-val" min="0" max="65535" value="0">
+            <button class="quick-btn" onclick="addToInput('${item.id}', 100)">+100</button>
+            <button class="quick-btn" onclick="addToInput('${item.id}', 1000)">+1K</button>
+            <button class="quick-btn max-btn" onclick="setInputVal('${item.id}', 65535)">Max</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setInputVal(id, val) {
+      const el = document.getElementById(`input_${id}`);
+      if (el) {
+        el.value = Math.max(0, Math.min(65535, parseInt(val) || 0));
+      }
+    }
+
+    function addToInput(id, amount) {
+      const el = document.getElementById(`input_${id}`);
+      if (el) {
+        const curr = parseInt(el.value) || 0;
+        setInputVal(id, curr + amount);
+        playCandyChime();
+      }
+    }
+
+    function setAllValues(val) {
+      BOOSTERS.forEach(item => setInputVal(item.id, val));
+      playCandyChime();
+      showToast(`⚡ Đã đặt tất cả bùa thành ${val.toLocaleString()}!`);
+    }
+
+    function setMaxLivesOnly() {
+      setInputVal("lives", 65535);
+      playCandyChime();
+      showToast("💖 Đã bật Max 65,535 Lượt Chơi (Mạng)!");
+    }
+
+    function resetToOriginal() {
+      if (!originalBuffer) {
+        setAllValues(0);
+        return;
+      }
+      parseBuffer(originalBuffer, false);
+      showToast("🔄 Đã khôi phục về giá trị ban đầu của file!");
+    }
+
+    // Đọc dữ liệu từ ArrayBuffer
+    function parseBuffer(buf, isNewFile = true) {
+      const view = new DataView(buf);
+      fileBuffer = new Uint8Array(buf.slice(0));
+
+      if (isNewFile) {
+        originalBuffer = new Uint8Array(buf.slice(0));
+      }
+
+      BOOSTERS.forEach(item => {
+        if (item.offset + 1 < view.byteLength) {
+          // 16-bit Unsigned Little-Endian (true)
+          const val = view.getUint16(item.offset, true);
+          setInputVal(item.id, val);
+        } else {
+          setInputVal(item.id, 0);
+        }
+      });
+    }
+
+    function handleFile(file) {
+      currentFileName = file.name;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        let buf = e.target.result;
+        if (buf.byteLength < 658) {
+          // Tự mở rộng lên 1024 bytes nếu file nhỏ
+          const newBuf = new Uint8Array(1024);
+          newBuf.set(new Uint8Array(buf));
+          buf = newBuf.buffer;
+        }
+
+        parseBuffer(buf, true);
+
+        // Hiển thị trạng thái file
+        const statusBar = document.getElementById("fileStatusBar");
+        const statusText = document.getElementById("fileStatusText");
+        statusBar.style.display = "flex";
+        statusText.innerText = `✅ Đã nạp file: ${file.name} (${buf.byteLength.toLocaleString()} bytes)`;
+        
+        document.getElementById("saveBarTitle").innerText = `Đang Sửa: ${file.name}`;
+        document.getElementById("saveBarSub").innerText = `Kích thước: ${buf.byteLength.toLocaleString()} bytes`;
+
+        playCandyChime();
+        showToast(`🎉 Nạp file ${file.name} thành công!`);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function handleFileSelect(e) {
+      const files = e.target.files;
+      if (files && files[0]) {
+        handleFile(files[0]);
+      }
+    }
+
+    // Tạo file mẫu 1024 bytes
+    function createSampleSaveFile() {
+      const buf = new Uint8Array(1024);
+      currentFileName = "save_sample_65535.dat";
+      
+      // Mặc định nạp 65535 vào các offset
+      const view = new DataView(buf.buffer);
+      BOOSTERS.forEach(item => {
+        view.setUint16(item.offset, 65535, true);
+      });
+
+      parseBuffer(buf.buffer, true);
+
+      const statusBar = document.getElementById("fileStatusBar");
+      const statusText = document.getElementById("fileStatusText");
+      statusBar.style.display = "flex";
+      statusText.innerText = `✨ File mẫu: save_sample_65535.dat (1,024 bytes)`;
+
+      playCandyChime();
+      showToast("✨ Đã tạo file save mẫu cực chuẩn!");
+    }
+
+    // Lưu và Tải file đã chỉnh sửa
+    function saveAndDownload() {
+      if (!fileBuffer) {
+        // Tự tạo file mới nếu chưa có
+        createSampleSaveFile();
+      }
+
+      const view = new DataView(fileBuffer.buffer);
+      BOOSTERS.forEach(item => {
+        const el = document.getElementById(`input_${item.id}`);
+        const val = Math.max(0, Math.min(65535, parseInt(el.value) || 0));
+        view.setUint16(item.offset, val, true);
+      });
+
+      const blob = new Blob([fileBuffer], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = currentFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      playCandyChime();
+      showToast(`💾 Đã tải về file: ${currentFileName}`);
+    }
+
+    // Tải file backup (.bak)
+    function downloadBackup() {
+      if (!originalBuffer) {
+        showToast("⚠️ Chưa có bản sao lưu nào được tải!");
+        return;
+      }
+      const blob = new Blob([originalBuffer], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = currentFileName + ".bak";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("🛡️ Đã tải về bản sao lưu an toàn!");
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").innerText = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+
+    // Kéo thả file
+    const dropZone = document.getElementById("dropZone");
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+      }, false);
+    });
+
+    dropZone.addEventListener("drop", e => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files && files[0]) {
+        handleFile(files[0]);
+      }
+    });
+
+    // Khởi động
+    renderCards();
+    // Tạo sẵn file mẫu để mở lên là dùng được ngay
+    createSampleSaveFile();
+  </script>
+</body>
+</html>
